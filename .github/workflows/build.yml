@@ -103,10 +103,7 @@ jobs:
     name: Sign Release APK
     runs-on: ubuntu-latest
     needs: build
-    if: >-
-      github.event_name == 'push' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') &&
-      secrets.KEYSTORE_BASE64 != ''
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
 
     steps:
       - name: Checkout
@@ -127,11 +124,22 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: gradle-${{ runner.os }}-
 
+      - name: Check for signing secrets
+        id: check-secrets
+        run: |
+          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "has_keystore=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_keystore=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Decode keystore
+        if: steps.check-secrets.outputs.has_keystore == 'true'
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release.keystore
 
       - name: Build signed release APK
+        if: steps.check-secrets.outputs.has_keystore == 'true'
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -145,6 +153,7 @@ jobs:
             --no-daemon
 
       - name: Upload signed APK
+        if: steps.check-secrets.outputs.has_keystore == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: rei-release-signed
