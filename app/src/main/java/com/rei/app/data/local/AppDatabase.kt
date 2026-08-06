@@ -108,7 +108,7 @@ interface TrackingDao {
     @Query("SELECT * FROM tracking WHERE mediaId = :id") suspend fun getById(id: Int): TrackingEntity?
     @Query("SELECT COUNT(*) FROM tracking WHERE status = :status") suspend fun countByStatus(status: String): Int
     @Query("SELECT COUNT(*) FROM tracking") suspend fun totalCount(): Int
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun upsert(entry: TrackingEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(entry: TrackingEntity)
     @Delete suspend fun delete(entry: TrackingEntity)
     @Query("DELETE FROM tracking WHERE mediaId = :id") suspend fun deleteById(id: Int)
     @Query("SELECT * FROM tracking WHERE idMal = :malId") suspend fun getByMalId(malId: Int): TrackingEntity?
@@ -120,20 +120,20 @@ interface EpisodeDao {
     @Query("SELECT * FROM episodes WHERE mediaId = :mediaId ORDER BY episodeNumber") fun getEpisodes(mediaId: Int): Flow<List<EpisodeEntity>>
     @Query("SELECT * FROM episodes WHERE mediaId = :mediaId AND watched = 1 ORDER BY episodeNumber") suspend fun getWatched(mediaId: Int): List<EpisodeEntity>
     @Query("SELECT COUNT(*) FROM episodes WHERE mediaId = :mediaId AND watched = 1") suspend fun watchedCount(mediaId: Int): Int
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun upsert(episode: EpisodeEntity)
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun upsertAll(episodes: List<EpisodeEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(episode: EpisodeEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsertAll(episodes: List<EpisodeEntity>)
     @Query("DELETE FROM episodes WHERE mediaId = :mediaId") suspend fun deleteForAnime(mediaId: Int)
 }
 
 @Dao
 interface EconomyDao {
     @Query("SELECT * FROM economy WHERE `key` = :key") suspend fun get(key: String): EconomyEntity?
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun set(entity: EconomyEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun set(entity: EconomyEntity)
     @Query("SELECT * FROM transactions ORDER BY timestamp DESC LIMIT :limit") fun recentTransactions(limit: Int = 50): Flow<List<TransactionEntity>>
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun addTransaction(tx: TransactionEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun addTransaction(tx: TransactionEntity)
     @Query("SELECT * FROM unlocks WHERE itemId = :itemId") suspend fun getUnlock(itemId: String): UnlockEntity?
     @Query("SELECT * FROM unlocks") fun allUnlocks(): Flow<List<UnlockEntity>>
-    @Insert(onConflict = OnConflictPolicy.REPLACE) suspend fun addUnlock(unlock: UnlockEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun addUnlock(unlock: UnlockEntity)
     @Query("SELECT SUM(amount) FROM transactions WHERE type = 'EARN'") suspend fun totalEarned(): Long?
     @Query("SELECT SUM(amount) FROM transactions WHERE type = 'SPEND'") suspend fun totalSpent(): Long?
 }
