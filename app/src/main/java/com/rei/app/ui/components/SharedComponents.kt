@@ -180,7 +180,7 @@ fun AnimeCard(anime: Anime, onClick: () -> Unit, modifier: Modifier = Modifier, 
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, MaterialTheme.colorScheme.background))))
         Column(Modifier.align(Alignment.BottomStart).padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(a.title.primary, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis, shadow = Shadow(Color.Black, androidx.compose.ui.geometry.Offset(0f,1f),3f))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) { if (c.showScoreOnCards) a.meanScore?.let { Text("★ ${it/10.0}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold) } a.genres.firstOrNull()?.let { g -> val gc = if (c.useColorfulGenres) genreColor(g) else Color.White.copy(alpha = 0.7f); Text(g, style = MaterialTheme.typography.labelSmall, color = gc) } }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) { if (c.showScoreOnCards) a.meanScore?.let { Text("★ ${it/10.0}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold) }; a.genres.firstOrNull()?.let { g -> val gc = if (c.useColorfulGenres) genreColor(g) else Color.White.copy(alpha = 0.7f); Text(g, style = MaterialTheme.typography.labelSmall, color = gc) } }
         }
     }
 }
