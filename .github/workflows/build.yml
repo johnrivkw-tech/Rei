@@ -106,7 +106,7 @@ jobs:
     if: >-
       github.event_name == 'push' &&
       (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') &&
-      ${{ secrets.KEYSTORE_BASE64 != '' }}
+      secrets.KEYSTORE_BASE64 != ''
 
     steps:
       - name: Checkout
