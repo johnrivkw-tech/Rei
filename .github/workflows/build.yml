@@ -40,7 +40,10 @@ jobs:
 
       # ── Lint ────────────────────────────────────────────────
       - name: Run lint
-        run: ./gradlew :app:lintDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -Dfile.encoding=UTF-8" 2>&1 | tee lint.log
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :app:lintDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m -Dfile.encoding=UTF-8" 2>&1 | tee lint.log
         continue-on-error: true
 
       - name: Upload lint report
