@@ -1,6 +1,7 @@
 package com.rei.app.ui.screens.home
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -37,7 +38,6 @@ import com.rei.app.ui.components.*
 import com.rei.app.ui.theme.LocalReiConfig
 import com.rei.app.navigation.Route
 import androidx.navigation.NavHostController
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +63,7 @@ fun HomeScreen(onAnimeClick: (Int) -> Unit, nav: NavHostController? = null, vm: 
                 }
             },
             actions = {
+                IconButton({ isRefreshing = true; vm.refresh(); scope.launch { kotlinx.coroutines.delay(1500); isRefreshing = false } }) { Icon(Icons.Outlined.Refresh, "Refresh", tint = MaterialTheme.colorScheme.onSurfaceVariant) }
                 IconButton({ nav?.navigate(Route.Calendar.route) }) { Icon(Icons.Outlined.CalendarMonth, "Schedule", tint = MaterialTheme.colorScheme.onSurfaceVariant) }
                 IconButton({ nav?.navigate(Route.WaifuGallery.route) }) { Icon(Icons.Outlined.Image, "Gallery", tint = MaterialTheme.colorScheme.onSurfaceVariant) }
                 BadgedBox(badge = { Badge { } }) { IconButton({ }) { Icon(Icons.Outlined.Notifications, "Notifications") } }
@@ -75,11 +76,7 @@ fun HomeScreen(onAnimeClick: (Int) -> Unit, nav: NavHostController? = null, vm: 
             is HomeState.Loading -> HomeLoadingContent(pv)
             is HomeState.Success -> {
                 val d = state as HomeState.Success
-                PullToRefreshBox(
-                    isRefreshing = isRefreshing,
-                    onRefresh = { isRefreshing = true; vm.refresh(); scope.launch { kotlinx.coroutines.delay(1500); isRefreshing = false } },
-                    modifier = Modifier.fillMaxSize().padding(pv)
-                ) {
+                Box(Modifier.fillMaxSize().padding(pv)) {
                     LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                         item { HeroCarousel(d.trending, onAnimeClick, Modifier.fillMaxWidth()) }
 
@@ -126,7 +123,7 @@ fun HomeScreen(onAnimeClick: (Int) -> Unit, nav: NavHostController? = null, vm: 
                         item {
                             SectionHeader("\u2605 MAL Top Rated")
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(horizontal = 20.dp)) {
-                                items(d.allTime.take(10).withIndex()) { (index, anime) ->
+                                itemsIndexed(d.allTime.take(10)) { index, anime ->
                                     Box {
                                         AnimeCard(anime, { onAnimeClick(anime.id) }, Modifier.width(140.dp))
                                         if (config.showRankBadges) { RankBadge(index + 1, Modifier.padding(4.dp).align(Alignment.TopStart)) }
@@ -171,6 +168,12 @@ fun HomeScreen(onAnimeClick: (Int) -> Unit, nav: NavHostController? = null, vm: 
                             }
                         }
                         item { Spacer(Modifier.height(80.dp)) }
+                    }
+                    if (isRefreshing) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.TopCenter).padding(top = 16.dp).size(28.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }

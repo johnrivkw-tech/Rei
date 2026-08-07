@@ -1,10 +1,12 @@
 package com.rei.app.ui
 
 import android.os.Bundle
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -15,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -147,8 +150,7 @@ private fun BottomNavLayout(nav: androidx.navigation.NavHostController, dest: an
 private fun RailNavLayout(nav: androidx.navigation.NavHostController, dest: androidx.navigation.NavDestination?, showFab: Boolean) {
     Row(Modifier.fillMaxSize()) {
         NavigationRail(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
-            tonalElevation = 3.dp
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
         ) {
             mainNav.forEach { item ->
                 val sel = dest?.hierarchy?.any { it.route == item.route } == true

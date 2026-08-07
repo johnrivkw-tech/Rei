@@ -289,24 +289,40 @@ fun ReiTheme(
 // ═══════════════════════════════════════════
 // COLOR SCHEMES
 // ═══════════════════════════════════════════
+@Composable
 private fun darkScheme(a: AccentColor) = MaterialTheme.colorScheme.copy(primary = a.toColor(), onPrimary = Color.White, primaryContainer = a.toColor().copy(alpha = .15f), onPrimaryContainer = a.toColor(), secondary = a.toColor().copy(alpha = .8f), onSecondary = Color.White, tertiary = a.toColor().copy(alpha = .6f), background = Color(0xFF0F0F1A), onBackground = Color(0xFFE6E1E5), surface = Color(0xFF1A1A2E), onSurface = Color(0xFFE6E1E5), surfaceVariant = Color(0xFF252540), onSurfaceVariant = Color(0xFFCAC4D0), outline = Color(0xFF49454F), outlineVariant = Color(0xFF333347))
+@Composable
 private fun lightScheme(a: AccentColor) = MaterialTheme.colorScheme.copy(primary = a.toColor(), onPrimary = Color.White, primaryContainer = a.toColor().copy(alpha = .12f), onPrimaryContainer = a.toColor(), secondary = a.toColor().copy(alpha = .8f), onSecondary = Color.White, background = Color(0xFFFFFBFE), onBackground = Color(0xFF1C1B1F), surface = Color(0xFFFFFBFE), onSurface = Color(0xFF1C1B1F), surfaceVariant = Color(0xFFE7E0EC), onSurfaceVariant = Color(0xFF49454F), outline = Color(0xFF79747E))
+@Composable
 private fun amoledScheme(a: AccentColor) = darkScheme(a).copy(background = Color.Black, surface = Color.Black, surfaceVariant = Color(0xFF0D0D1A), outline = Color(0xFF1A1A2E))
+@Composable
 private fun midnightDuskScheme(a: AccentColor) = darkScheme(a).copy(secondary = Color(0xFFE85D75), tertiary = Color(0xFF6B4DFF), background = Color(0xFF0D0D1A), surface = Color(0xFF151528), surfaceVariant = Color(0xFF1E1E3A), outline = Color(0xFF3A3A5C))
+@Composable
 private fun strawberryScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFFF4081) else a.toColor(), secondary = Color(0xFFFF80AB), tertiary = Color(0xFFFF1744), background = Color(0xFF1A0A14), surface = Color(0xFF221018), surfaceVariant = Color(0xFF321A24), outline = Color(0xFF4A2838))
+@Composable
 private fun oceanScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF00BFA5) else a.toColor(), secondary = Color(0xFF0097A7), tertiary = Color(0xFF0091EA), background = Color(0xFF0A141A), surface = Color(0xFF0F1E28), surfaceVariant = Color(0xFF152A38), outline = Color(0xFF28404E))
+@Composable
 private fun sakuraScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFFF8BA7) else a.toColor(), secondary = Color(0xFFFFC1D4), tertiary = Color(0xFFF48FB1), background = Color(0xFF12081A), surface = Color(0xFF1A0E28), surfaceVariant = Color(0xFF241438), outline = Color(0xFF3E2854))
+@Composable
 private fun lavenderNightScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF7C4DFF) else a.toColor(), secondary = Color(0xFFB388FF), tertiary = Color(0xFF9C7CFF), background = Color(0xFF0D081A), surface = Color(0xFF161028), surfaceVariant = Color(0xFF201840), outline = Color(0xFF3A2860))
+@Composable
 private fun matrixScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF39FF14) else a.toColor(), secondary = Color(0xFF00E676), tertiary = Color(0xFF76FF03), background = Color(0xFF0A0A0A), surface = Color(0xFF0F150F), surfaceVariant = Color(0xFF152015), outline = Color(0xFF1A3A1A))
+@Composable
 private fun nuxtScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF00DC82) else a.toColor(), secondary = Color(0xFF00C972), tertiary = Color(0xFF10B981), background = Color(0xFF0E0E10), surface = Color(0xFF18181B), surfaceVariant = Color(0xFF27272A), outline = Color(0xFF3F3F46))
+@Composable
 private fun roseGoldScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFB76E79) else a.toColor(), secondary = Color(0xFFE8A0A0), tertiary = Color(0xFFF0C0C0), background = Color(0xFF1A1014), surface = Color(0xFF221520), surfaceVariant = Color(0xFF332028), outline = Color(0xFF442838))
 
+@Composable
 private fun cyberpunkScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFFF00FF) else a.toColor(), secondary = Color(0xFF00FFFF), tertiary = Color(0xFFFFFF00), background = Color(0xFF0A0012), surface = Color(0xFF12001E), surfaceVariant = Color(0xFF1A0030), outline = Color(0xFF2E0050))
 
+@Composable
 private fun vaporwaveScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFFF71CE) else a.toColor(), secondary = Color(0xFF01CDFE), tertiary = Color(0xFF05FFA1), background = Color(0xFF1A0A2E), surface = Color(0xFF221240), surfaceVariant = Color(0xFF2D1A55), outline = Color(0xFF3F2670))
 
+@Composable
 private fun deepPurpleScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF7B1FA2) else a.toColor(), secondary = Color(0xFFCE93D8), tertiary = Color(0xFFAB47BC), background = Color(0xFF0E0A1A), surface = Color(0xFF15102A), surfaceVariant = Color(0xFF1E1640), outline = Color(0xFF2A2058))
 
+@Composable
 private fun arcticScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFF80DEEA) else a.toColor(), secondary = Color(0xFFB2EBF2), tertiary = Color(0xFF4DD0E1), background = Color(0xFF0A1520), surface = Color(0xFF0F1E30), surfaceVariant = Color(0xFF152840), outline = Color(0xFF1E3A58))
 
+@Composable
 private fun terracottaScheme(a: AccentColor) = darkScheme(a).copy(primary = if (a == AccentColor.REI_BLUE) Color(0xFFE07A5F) else a.toColor(), secondary = Color(0xFFF2CC8F), tertiary = Color(0xFF81B29A), background = Color(0xFF1A1210), surface = Color(0xFF251A16), surfaceVariant = Color(0xFF33241E), outline = Color(0xFF443028))

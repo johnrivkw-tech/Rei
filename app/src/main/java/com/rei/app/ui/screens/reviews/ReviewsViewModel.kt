@@ -27,12 +27,13 @@ class ReviewsViewModel @Inject constructor(
                 val malReviews = repo.getAnimeReviews(animeId)
                 _reviews.value = malReviews.map { r ->
                     ReviewItem(
-                        id = r.malReviewId,
-                        username = r.user?.username ?: "Anonymous",
-                        score = (r.score * 10).toInt().coerceIn(0, 100),
+                        id = r.id,
+                        username = r.username.ifBlank { "Anonymous" },
+                        score = (r.score * 10).coerceIn(0, 100),
                         text = r.review,
                         date = r.date,
-                        helpful = r.reviewerReactions?.overall ?: 0
+                        helpful = 0,
+                        avatar = r.avatar
                     )
                 }
             } catch (_: Exception) {

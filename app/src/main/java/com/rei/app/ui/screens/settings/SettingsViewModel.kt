@@ -30,7 +30,6 @@ class SettingsViewModel @Inject constructor(
     val anilistLoggedIn: StateFlow<Boolean> = anilistAuth.accessToken.map { it != null }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
     val malUserName: StateFlow<String?> = malAuth.userName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    fun update(transform: ReiConfig.(Boolean) -> ReiConfig) = tvm.update { c -> c.transform(true) }
     fun update(transform: (ReiConfig) -> ReiConfig) = tvm.update(transform)
 
     // ═══ Auth ═══

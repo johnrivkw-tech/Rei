@@ -66,7 +66,7 @@ class StatsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repo.getViewer().collect { result ->
-                    result.first?.let { user ->
+                    result?.let { user ->
                         user.statistics?.anime?.let { animeStats ->
                             val current = _stats.value
                             _stats.value = current.copy(

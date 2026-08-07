@@ -6,6 +6,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.rei.app.ui.theme.*
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = hiltViewModel()) {
     val config by vm.config.collectAsState()
@@ -173,7 +174,7 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = hiltViewModel()) 
             item { EnumRow(Icons.Outlined.BlurOn, "Blur Intensity", config.blurIntensity.label, { pick = "blur" }) }
             item { EnumRow(Icons.Outlined.Speed, "Animation Speed", config.animSpeed.label, { pick = "anim" }) }
             item { EnumRow(Icons.Outlined.Vibration, "Haptic Intensity", config.hapticIntensity.label, { pick = "haptic" }) }
-            item { EnumRow(Icons.Outlined.Transition, "Transitions", config.transitionStyle.label, { pick = "transition" }) }
+            item { EnumRow(Icons.Outlined.SwapHoriz, "Transitions", config.transitionStyle.label, { pick = "transition" }) }
             item { EnumRow(Icons.Outlined.ViewCarousel, "Indicators", config.indicatorStyle.label, { pick = "indicator" }) }
             item { SettingsSwitch(Icons.Outlined.ViewInAr, "Parallax Effect", "Banner parallax scroll", config.useParallax) { vm.update { c -> c.copy(useParallax = it) } } }
             item { SettingsSwitch(Icons.Outlined.BlurCircular, "Blur Banner", "Blur behind banner images", config.useBlurBanner) { vm.update { c -> c.copy(useBlurBanner = it) } } }
@@ -214,11 +215,11 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = hiltViewModel()) 
             item { EnumRow(Icons.Outlined.Sort, "Default Sort", config.defaultSort.label, { pick = "sort" }) }
             item { EnumRow(Icons.Outlined.Swipe, "Swipe Left", config.swipeLeftAction.label, { pick = "swipeL" }) }
             item { EnumRow(Icons.Outlined.SwipeRight, "Swipe Right", config.swipeRightAction.label, { pick = "swipeR" }) }
-            item { EnumRow(Icons.Outlined.NavigationMore, "Nav Style", config.navStyle.label, { pick = "nav" }) }
+            item { EnumRow(Icons.Outlined.Navigation, "Nav Style", config.navStyle.label, { pick = "nav" }) }
             item { EnumRow(Icons.Outlined.SmartDisplay, "Splash Screen", config.splashAfter.label, { pick = "splash" }) }
             item { EnumRow(Icons.Outlined.Notifications, "Notification Style", config.notifyStyle.label, { pick = "notify" }) }
             item { EnumRow(Icons.Outlined.Tab, "Detail Tab Order", config.detailTabOrder.label, { pick = "detailTabOrder" }) }
-            item { EnumRow(Icons.Outlined.NavigationMore, "Startup Screen", config.startupScreen.label, { pick = "startupScreen" }) }
+            item { EnumRow(Icons.Outlined.Navigation, "Startup Screen", config.startupScreen.label, { pick = "startupScreen" }) }
             item { EnumRow(Icons.Outlined.ViewCarousel, "Scroll Behavior", config.scrollBehavior.label, { pick = "scrollBehavior" }) }
             item { SettingsSwitch(Icons.Outlined.Visibility, "Translucent Bars", "System bar transparency", config.useTranslucentBars) { vm.update { c -> c.copy(useTranslucentBars = it) } } }
             item { SettingsSwitch(Icons.Outlined.PictureInPicture, "Overlay Detail", "Open detail in overlay", config.openDetailInOverlay) { vm.update { c -> c.copy(openDetailInOverlay = it) } } }
@@ -445,11 +446,11 @@ private fun PremiumSlider(label: String, value: Int, range: IntRange, unit: Stri
 }
 
 @Composable
-private fun <T> CompactSelector(label: String, items: List<T>, current: T, onSelect: (T) -> Unit, textLabel: (T) -> String, icon: (T) -> String) {
+private fun <T> CompactSelector(label: String, itemList: List<T>, current: T, onSelect: (T) -> Unit, textLabel: (T) -> String, icon: (T) -> String) {
     Column(Modifier.padding(horizontal = 16.dp, vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
         LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            items(items) { item ->
+            items(itemList) { item ->
                 val sel = item == current
                 Surface(onClick = { onSelect(item) }, shape = RoundedCornerShape(10.dp), color = if (sel) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), border = if (sel) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)) else null) {
                     Row(Modifier.padding(horizontal = 10.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {

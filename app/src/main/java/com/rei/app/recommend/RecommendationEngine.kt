@@ -111,7 +111,7 @@ class RecommendationEngine @Inject constructor(
         val totalTracked: Int
     )
 
-    private fun buildUserProfile(tracking: List<TrackingEntity>): UserProfile {
+    private suspend fun buildUserProfile(tracking: List<TrackingEntity>): UserProfile {
         val genreW = mutableMapOf<String, Double>()
         val tagW = mutableMapOf<String, Double>()
         val studioW = mutableMapOf<String, Double>()

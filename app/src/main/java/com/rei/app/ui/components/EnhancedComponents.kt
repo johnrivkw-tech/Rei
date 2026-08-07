@@ -13,11 +13,12 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.BlurEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import com.rei.app.ui.theme.LocalReiConfig
 
 // ═══════════════════════════════════════════
@@ -176,5 +177,3 @@ fun MarqueeText(text: String, modifier: Modifier = Modifier) {
         Text(text, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodyMedium)
     }
 }
-
-private fun rememberScrollState() = androidx.compose.foundation.rememberScrollState()

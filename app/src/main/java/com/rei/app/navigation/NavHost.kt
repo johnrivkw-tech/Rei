@@ -71,13 +71,13 @@ sealed class Route(val route: String) {
 
 @Composable
 fun ReiNavHost(nav: NavHostController = rememberNavController(), m: Modifier = Modifier) {
-    // Shared element transition specs
-    val enter = { fadeIn(tween(300)) + slideIntoContainer(AnimatedContentTransitionScope.SlideStart, spring(stiffness = Spring.StiffnessMedium)) }
-    val exit = { fadeOut(tween(200)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideStart, spring(stiffness = Spring.StiffnessMedium)) }
-    val popEnter = { fadeIn(tween(300)) + slideIntoContainer(AnimatedContentTransitionScope.SlideEnd, spring(stiffness = Spring.StiffnessMedium)) }
-    val popExit = { fadeOut(tween(200)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideEnd, spring(stiffness = Spring.StiffnessMedium)) }
-
-    NavHost(nav, Route.Home.route, modifier = m, enterTransition = enter(), exitTransition = exit(), popEnterTransition = popEnter(), popExitTransition = popExit()) {
+    NavHost(
+        nav, Route.Home.route, modifier = m,
+        enterTransition = { fadeIn(tween(300)) + slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, spring(stiffness = Spring.StiffnessMedium)) },
+        exitTransition = { fadeOut(tween(200)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, spring(stiffness = Spring.StiffnessMedium)) },
+        popEnterTransition = { fadeIn(tween(300)) + slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, spring(stiffness = Spring.StiffnessMedium)) },
+        popExitTransition = { fadeOut(tween(200)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, spring(stiffness = Spring.StiffnessMedium)) }
+    ) {
         composable(Route.Home.route) { HomeScreen({ nav.navigate(Route.AnimeDetail.create(it)) }, nav) }
         composable(Route.Search.route) { SearchScreen { nav.navigate(Route.AnimeDetail.create(it)) } }
         composable(Route.SearchGenre.route, arguments = listOf(navArgument("genre") { type = NavType.StringType })) {

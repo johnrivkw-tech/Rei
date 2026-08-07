@@ -24,11 +24,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.util.changes
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -44,6 +43,7 @@ import com.rei.app.ui.theme.CardStyle
 import com.rei.app.ui.theme.ScoreStyle
 import com.rei.app.ui.theme.IndicatorStyle
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // ═══════════════════════════════════════════
 // GENRE COLOR MAP — 30+ genres with unique colors
@@ -68,6 +68,7 @@ fun genreColor(genre: String): Color = GenreColorMap[genre] ?: Color(0xFF78909C)
 // ═══════════════════════════════════════════
 // HERO CAROUSEL
 // ═══════════════════════════════════════════
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun HeroCarousel(anime: List<Anime>, onAnimeClick: (Int) -> Unit, modifier: Modifier = Modifier) {
     if (anime.isEmpty()) return
@@ -76,7 +77,7 @@ fun HeroCarousel(anime: List<Anime>, onAnimeClick: (Int) -> Unit, modifier: Modi
     val config = LocalReiConfig.current
     LaunchedEffect(pagerState) { while (true) { delay(config.carouselAutoScrollMs.toLong()); pagerState.animateScrollToPage((pagerState.currentPage + 1) % pagerState.pageCount) } }
     Box(modifier = modifier.height(bannerH.dp)) {
-        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize(), beyondViewportPageCount = 1) { page ->
+        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize(), beyondBoundsPageCount = 1) { page ->
             val item = anime[page]
             Box(modifier = Modifier.fillMaxSize().clickable { onAnimeClick(item.id) }) {
                 AsyncImage(model = ImageRequest.Builder(LocalContext.current).data(item.bannerImage ?: item.coverImage.best).crossfade(true).build(), contentDescription = item.title.primary, modifier = Modifier.fillMaxSize().graphicsLayer {
@@ -86,7 +87,7 @@ fun HeroCarousel(anime: List<Anime>, onAnimeClick: (Int) -> Unit, modifier: Modi
                 Box(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color.Transparent, MaterialTheme.colorScheme.background.copy(alpha = 0.3f), MaterialTheme.colorScheme.background.copy(alpha = 0.9f), MaterialTheme.colorScheme.background))))
                 Column(modifier = Modifier.align(Alignment.BottomStart).padding(horizontal = 24.dp).padding(bottom = 56.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (config.showFormatOnCards) item.format?.let { Surface(color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(4.dp)) { Text(it.name.replace("_"," "), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) } }
-                    Text(item.title.primary, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground, shadow = Shadow(Color.Black.copy(alpha = 0.5f), androidx.compose.ui.geometry.Offset(0f, 2f), 4f))
+                    Text(item.title.primary, style = MaterialTheme.typography.headlineMedium.copy(shadow = Shadow(Color.Black.copy(alpha = 0.5f), androidx.compose.ui.geometry.Offset(0f, 2f), 4f)), fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         if (config.showScoreOnCards) item.meanScore?.let { ScoreBadge(it) }
                         item.episodes?.let { Text("$it eps", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
@@ -179,7 +180,7 @@ fun AnimeCard(anime: Anime, onClick: () -> Unit, modifier: Modifier = Modifier, 
         AsyncImage(model = ImageRequest.Builder(LocalContext.current).data(a.bannerImage ?: a.coverImage.best).crossfade(true).build(), a.title.primary, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop, alpha = 0.7f)
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, MaterialTheme.colorScheme.background))))
         Column(Modifier.align(Alignment.BottomStart).padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(a.title.primary, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis, shadow = Shadow(Color.Black, androidx.compose.ui.geometry.Offset(0f,1f),3f))
+            Text(a.title.primary, style = MaterialTheme.typography.titleSmall.copy(shadow = Shadow(Color.Black, androidx.compose.ui.geometry.Offset(0f,1f),3f)), fontWeight = FontWeight.Bold, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) { if (c.showScoreOnCards) a.meanScore?.let { Text("★ ${it/10.0}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold) }; a.genres.firstOrNull()?.let { g -> val gc = if (c.useColorfulGenres) genreColor(g) else Color.White.copy(alpha = 0.7f); Text(g, style = MaterialTheme.typography.labelSmall, color = gc) } }
         }
     }
@@ -240,10 +241,10 @@ fun AnimeCard(anime: Anime, onClick: () -> Unit, modifier: Modifier = Modifier, 
 // ═══════════════════════════════════════════
 @Composable fun ShimmerBox(m: Modifier = Modifier) {
     val a by rememberInfiniteTransition(label = "s").animateFloat(0.2f, 0.5f, infiniteRepeatable(tween(800), RepeatMode.Reverse), label = "s")
-    Surface(m, color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = a), shape = RoundedCornerShape(8.dp))
+    Surface(m, color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = a), shape = RoundedCornerShape(8.dp)) {}
 }
 
-@Composable fun GenreChip(genre: String, sel: Boolean, onClick: () -> Unit, m: Modifier = Modifier) {
+@Composable fun GenreChip(genre: String, sel: Boolean, m: Modifier = Modifier, onClick: () -> Unit) {
     val config = LocalReiConfig.current
     val gc = if (config.useColorfulGenres) genreColor(genre) else MaterialTheme.colorScheme.primary
     FilterChip(selected = sel, onClick = onClick, label = { Text(genre, style = MaterialTheme.typography.labelMedium) }, modifier = m, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = gc.copy(alpha = 0.2f), selectedLabelColor = gc))

@@ -124,10 +124,6 @@ enum class MediaListStatus {
         DROPPED -> "Dropped"; PAUSED -> "On Hold"; REPEATING -> "Rewatching"
     }
     val icon: String get() = when (this) {
-        CURRENT -> "\u25B6"; PLANNING -> "\u25CB"; COMPLETED -> "\u2713"
-        DROPPED -> "\u2715"; PAUSED -> "\u23F8"; REPEATING -> "\u21BB"
-    }
-    val icon: String get() = when (this) {
         CURRENT -> "▶"; PLANNING -> "≡"; COMPLETED -> "✓"
         DROPPED -> "\u2715"; PAUSED -> "\u2225"; REPEATING -> "\u21BB"
     }

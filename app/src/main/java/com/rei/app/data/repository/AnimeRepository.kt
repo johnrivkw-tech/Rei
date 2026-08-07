@@ -75,7 +75,7 @@ class AnimeRepository @Inject constructor(
 
     // ── Kitsu ──
     suspend fun getKitsuTrending(limit: Int = 20) = kitsu.getTrending(limit)
-    suspend fun getKitsuCategories() = kitsu.getCategory()
+    suspend fun getKitsuCategories() = kitsu.getCategories()
     suspend fun searchKitsuAnime(query: String) = kitsu.searchAnime(query)
 
     // ── Shikimori ──

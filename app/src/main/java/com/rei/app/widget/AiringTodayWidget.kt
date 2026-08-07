@@ -1,13 +1,14 @@
 package com.rei.app.widget
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.glance.*
 import androidx.glance.appwidget.*
-import androidx.glance.appwidget.layout.*
 import androidx.glance.layout.*
 import androidx.glance.material3.*
 import androidx.glance.text.*
-import androidx.glance.unit.ColorProvider
 import com.rei.app.data.local.AppDatabase
 import com.rei.app.data.local.TrackingEntity
 import dagger.hilt.android.HiltAndroidApp

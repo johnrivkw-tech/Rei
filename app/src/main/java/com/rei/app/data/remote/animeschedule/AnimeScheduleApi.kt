@@ -66,7 +66,7 @@ class AnimeScheduleApi(
     /** Convert ScheduleItem to domain Anime */
     fun ScheduleItem.toAnime() = Anime(
         id = anilistId,
-        title = AnimeTitle(romaji = title, english = title, nativeTitle = title),
+        title = AnimeTitle(romaji = title, english = title, native = title),
         coverImage = CoverImage(large = imageUrl, medium = imageUrl),
         bannerImage = null,
         meanScore = null,
@@ -76,11 +76,10 @@ class AnimeScheduleApi(
         genres = emptyList(),
         tags = emptyList(),
         studios = emptyList(),
-        nextAiringEpisode = NextAiringEpisode(episode = episode, timeUntilAiring = timeUntilAiring),
+        nextAiringEpisode = AiringSchedule(airingAt = airingAt, timeUntilAiring = timeUntilAiring, episode = episode),
         seasonYear = null,
         duration = null,
         description = null,
-        source = null,
         popularity = null,
         trending = null,
         favourites = null,

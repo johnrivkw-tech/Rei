@@ -1,5 +1,6 @@
 package com.rei.app.ui.screens.stats
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -16,16 +17,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rei.app.ui.components.ScoreRing
 import com.rei.app.ui.components.genreColor
 import com.rei.app.ui.components.PremiumStatCard
 import com.rei.app.ui.theme.LocalReiConfig
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.Stroke
 import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3Api::class)

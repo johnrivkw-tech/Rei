@@ -2,7 +2,6 @@ package com.rei.app.ui.theme
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -223,7 +222,7 @@ class ThemeViewModel @Inject constructor(private val store: ReiDataStore) : View
 
 class ReiDataStore @Inject constructor(private val ds: DataStore<Preferences>) {
     val prefs: Flow<Preferences> = ds.data
-    suspend fun putInt(k: PreferencesKey<Int>, v: Int) = ds.edit { it[k] = v }
-    suspend fun putBoolean(k: PreferencesKey<Boolean>, v: Boolean) = ds.edit { it[k] = v }
-    suspend fun putString(k: PreferencesKey<String>, v: String) = ds.edit { it[k] = v }
+    suspend fun putInt(k: Preferences.Key<Int>, v: Int) = ds.edit { it[k] = v }
+    suspend fun putBoolean(k: Preferences.Key<Boolean>, v: Boolean) = ds.edit { it[k] = v }
+    suspend fun putString(k: Preferences.Key<String>, v: String) = ds.edit { it[k] = v }
 }

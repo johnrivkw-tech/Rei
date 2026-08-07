@@ -89,6 +89,6 @@ data class TraceMatch(
 ) {
     val displayTitle: String get() = title.english ?: title.romaji ?: title.native ?: "Unknown"
     val similarityPercent: String get() = "${(similarity * 100).toInt()}%"
-    val timestamp: String get() { val t = from.toInt(); "${t / 60}:${(t % 60).toString().padStart(2, '0')}" }
+    val timestamp: String get() { val t = from.toInt(); return "${t / 60}:${(t % 60).toString().padStart(2, '0')}" }
 }
 data class TraceTitle(val romaji: String? = null, val english: String? = null, val native: String? = null)
