@@ -34,6 +34,7 @@ data class OnboardPage(
     val features: List<String>
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(onFinish: () -> Unit) {
     val pages = listOf(
@@ -82,7 +83,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         HorizontalPager(
             state = pager,
             modifier = Modifier.fillMaxSize(),
-            beyondViewportPageCount = 1
+            beyondBoundsPageCount = 1
         ) { page ->
             val p = pages[page]
             val pageOffset = ((pager.currentPage - page).toFloat()).let { kotlin.math.abs(it) }
